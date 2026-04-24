@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ObraControl | Supervision inteligente para obras</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #10233f;
+      --navy-deep: #0a1a2f;
+      --navy-soft: #163358;
+      --orange: #f77f00;
+      --orange-strong: #ff9728;
+      --orange-deep: #d36e00;
+      --white: #ffffff;
+      --paper: #f5f7fb;
+      --paper-2: #eef3f8;
+      --ink: #15202f;
+      --muted: #5d6a7c;
+      --line: #d9e2ec;
+      --line-soft: rgba(255, 255, 255, 0.12);
+      --success: #1f9d76;
+      --shadow-xl: 0 28px 60px rgba(13, 27, 46, 0.16);
+      --shadow-lg: 0 20px 38px rgba(13, 27, 46, 0.1);
+      --radius-xl: 34px;
+      --radius-lg: 26px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
+      --font-display: "Montserrat", sans-serif;
+      --font-body: "Roboto", sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(247, 127, 0, 0.12), transparent 22%),
+        linear-gradient(180deg, #f0f4f8 0%, #ffffff 38%, #eef3f8 100%);
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--orange-deep);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 38px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--orange);
+    }
+
+    .section-head {
+      max-width: 780px;
+      margin: 0 auto 42px;
+      text-align: center;
+    }
+
+    .section-head h2,
+    .hero-copy h1,
+    .story-copy h2,
+    .cta-copy h2,
+    .final-copy h2 {
+      font-family: var(--font-display);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 4.7vw, 3.6rem);
+      color: var(--navy);
+      margin: 14px 0 16px;
+    }
+
+    .section-head p,
+    .hero-copy p,
+    .pain-card p,
+    .story-copy p,
+    .service-card p,
+    .benefit-card p,
+    .proof-card p,
+    .timeline-step p,
+    .cta-copy p,
+    .contact-info a,
+    .contact-info span,
+    .footer-note {
+      color: var(--muted);
+      line-height: 1.68;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 30px rgba(17, 35, 63, 0.14);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-strong) 100%);
+      color: var(--white);
+    }
+
+    .btn-secondary {
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--white);
+    }
+
+    .btn-dark {
+      border: 1px solid rgba(16, 35, 63, 0.12);
+      background: var(--white);
+      color: var(--navy);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      background: rgba(10, 26, 47, 0.94);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-row {
+      min-height: 84px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand-logo {
+      width: 238px;
+      max-width: 52vw;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover { color: var(--orange-strong); }
+
+    .nav-links .nav-cta {
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-strong) 100%);
+      color: var(--white);
+      box-shadow: 0 16px 28px rgba(247, 127, 0, 0.25);
+    }
+
+    .hero {
+      padding: 42px 0 28px;
+    }
+
+    .hero-shell {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      background: linear-gradient(135deg, rgba(10, 26, 47, 0.98), rgba(19, 45, 79, 0.94));
+      border-radius: 36px;
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+      min-height: 690px;
+    }
+
+    .hero-copy {
+      padding: 72px 60px 60px;
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+        radial-gradient(circle at top left, rgba(247, 127, 0, 0.12), transparent 30%);
+    }
+
+    .hero-copy::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 88px 88px;
+      opacity: 0.16;
+      pointer-events: none;
+    }
+
+    .hero-copy > * { position: relative; z-index: 1; }
+
+    .hero-copy h1 {
+      font-size: clamp(2.75rem, 6vw, 4.95rem);
+      margin: 18px 0 22px;
+      max-width: 640px;
+      color: var(--white);
+    }
+
+    .hero-copy h1 .accent {
+      display: block;
+      color: var(--orange);
+    }
+
+    .hero-copy p {
+      max-width: 570px;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 1.06rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 30px 0 36px;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      max-width: 640px;
+    }
+
+    .hero-point {
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+      padding: 18px 16px;
+    }
+
+    .hero-point strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      color: var(--orange-strong);
+      margin-bottom: 6px;
+    }
+
+    .hero-point span {
+      display: block;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.5;
+      font-size: 0.92rem;
+    }
+
+    .hero-media {
+      position: relative;
+      min-height: 100%;
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    .hero-media::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(10, 26, 47, 0.08), rgba(10, 26, 47, 0.68)),
+        linear-gradient(90deg, rgba(10, 26, 47, 0.42), rgba(10, 26, 47, 0.06));
+      z-index: 1;
+    }
+
+    .hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-float {
+      position: absolute;
+      right: 28px;
+      bottom: 28px;
+      z-index: 2;
+      width: min(280px, calc(100% - 56px));
+      border-radius: 24px;
+      padding: 18px;
+      background: rgba(9, 20, 37, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 18px 34px rgba(8, 15, 28, 0.28);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-float .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 0.76rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .hero-float .badge::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #2dd4bf;
+      box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.14);
+    }
+
+    .hero-float h3 {
+      font-family: var(--font-display);
+      color: var(--white);
+      font-size: 1.08rem;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .hero-float p {
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .pain {
+      padding: 28px 0 18px;
+    }
+
+    .pain-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .pain-card,
+    .timeline-step,
+    .proof-card,
+    .service-card,
+    .benefit-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pain-card {
+      padding: 24px 20px;
+    }
+
+    .icon-box {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, rgba(247, 127, 0, 0.14), rgba(247, 127, 0, 0.04));
+      color: var(--orange-deep);
+    }
+
+    .icon-box svg {
+      width: 26px;
+      height: 26px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .pain-card h3,
+    .service-card h3,
+    .benefit-card h3,
+    .timeline-step h3,
+    .proof-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.02rem;
+      color: var(--navy);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .story {
+      padding: 56px 0;
+    }
+
+    .story-shell {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      background: linear-gradient(135deg, #112642, #0b1a30);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .story-photo {
+      min-height: 360px;
+      position: relative;
+    }
+
+    .story-photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(11, 26, 48, 0.08), rgba(11, 26, 48, 0.4)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(11, 26, 48, 0.26));
+    }
+
+    .story-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .story-copy {
+      padding: 52px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: var(--white);
+    }
+
+    .story-copy h2 {
+      font-size: clamp(2rem, 4vw, 3.15rem);
+      color: var(--white);
+      margin: 14px 0 16px;
+    }
+
+    .story-copy h2 span { color: var(--orange); }
+    .story-copy p { color: rgba(255, 255, 255, 0.74); max-width: 560px; }
+
+    .story-proof {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .story-proof div {
+      padding: 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .story-proof strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      color: var(--orange-strong);
+      margin-bottom: 6px;
+    }
+
+    .story-proof span {
+      display: block;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .timeline {
+      padding: 76px 0 18px;
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .timeline-step {
+      padding: 28px 22px;
+    }
+
+    .step-number {
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-strong));
+      color: var(--white);
+      font-family: var(--font-display);
+      font-weight: 900;
+    }
+
+    .services {
+      padding: 32px 0 22px;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .service-card {
+      overflow: hidden;
+    }
+
+    .service-image {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+    }
+
+    .service-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .service-card:hover .service-image img { transform: scale(1.04); }
+
+    .service-copy {
+      padding: 22px;
+    }
+
+    .benefits {
+      padding: 30px 0 72px;
+    }
+
+    .benefits-shell {
+      background: linear-gradient(135deg, #10233f, #0b1a30);
+      border-radius: var(--radius-xl);
+      padding: 46px 34px;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .benefits-shell .section-head h2,
+    .benefits-shell .section-head p,
+    .benefits-shell .eyebrow {
+      color: var(--white);
+    }
+
+    .benefits-shell .eyebrow::before { background: var(--orange); }
+    .benefits-shell .section-head p { color: rgba(255, 255, 255, 0.74); }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .benefit-card {
+      padding: 22px 18px;
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.08);
+      box-shadow: none;
+    }
+
+    .benefit-card h3 { color: var(--white); }
+    .benefit-card p { color: rgba(255, 255, 255, 0.72); }
+
+    .benefit-card .icon-box {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--orange-strong);
+    }
+
+    .proof {
+      padding: 0 0 26px;
+    }
+
+    .proof-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+    }
+
+    .proof-card {
+      padding: 26px;
+    }
+
+    .proof-card.dark {
+      background: linear-gradient(135deg, #122844, #0c1c31);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: var(--white);
+    }
+
+    .proof-card.dark h3,
+    .proof-card.dark p,
+    .proof-card.dark .mini-stat span {
+      color: var(--white);
+    }
+
+    .proof-card.dark p { color: rgba(255, 255, 255, 0.72); }
+
+    .dashboard-shell {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .dashboard-panel {
+      border-radius: 20px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .dashboard-panel.light {
+      background: var(--paper);
+      border-color: var(--line);
+    }
+
+    .dashboard-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .dashboard-panel.light .pill {
+      background: rgba(16, 35, 63, 0.08);
+      color: var(--navy);
+    }
+
+    .pill::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 0 4px rgba(31, 157, 118, 0.16);
+    }
+
+    .chart {
+      height: 180px;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      align-items: end;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .chart span {
+      border-radius: 14px 14px 0 0;
+      background: linear-gradient(180deg, var(--orange-strong), var(--orange-deep));
+      box-shadow: inset 0 -8px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .chart span:nth-child(1) { height: 42%; }
+    .chart span:nth-child(2) { height: 64%; }
+    .chart span:nth-child(3) { height: 58%; }
+    .chart span:nth-child(4) { height: 86%; }
+    .chart span:nth-child(5) { height: 62%; }
+    .chart span:nth-child(6) { height: 78%; }
+    .chart span:nth-child(7) { height: 98%; }
+
+    .mini-stats {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .mini-stat {
+      padding: 14px 15px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .dashboard-panel.light .mini-stat {
+      background: var(--white);
+      border: 1px solid var(--line);
+    }
+
+    .mini-stat strong {
+      font-family: var(--font-display);
+      color: var(--orange-deep);
+      font-size: 1.08rem;
+    }
+
+    .cta {
+      padding: 24px 0 84px;
+    }
+
+    .cta-shell {
+      display: grid;
+      grid-template-columns: 1fr 0.92fr;
+      gap: 24px;
+      align-items: center;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 34px;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .cta-copy h2 {
+      font-size: clamp(2rem, 4.2vw, 3.25rem);
+      color: var(--navy);
+      margin: 14px 0;
+    }
+
+    .cta-copy h2 span { color: var(--orange); }
+
+    .cta-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .cta-list li {
+      list-style: none;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    .cta-list li::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      margin-top: 8px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 0 6px rgba(247, 127, 0, 0.12);
+    }
+
+    .cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .final-copy {
+      position: relative;
+      overflow: hidden;
+      min-height: 320px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(12, 28, 49, 0.16), rgba(12, 28, 49, 0.62));
+    }
+
+    .final-copy img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .final-copy::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(12, 28, 49, 0.14), rgba(12, 28, 49, 0.68)),
+        linear-gradient(90deg, rgba(12, 28, 49, 0.64), rgba(12, 28, 49, 0.16));
+    }
+
+    .final-overlay {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      color: var(--white);
+    }
+
+    .final-overlay h2 {
+      color: var(--white);
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .final-overlay p {
+      color: rgba(255, 255, 255, 0.76);
+      line-height: 1.62;
+      max-width: 440px;
+    }
+
+    .contact-band {
+      background: var(--navy);
+      color: var(--white);
+      padding: 18px 0;
+    }
+
+    .contact-shell {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .contact-logo {
+      width: 190px;
+      filter: brightness(0) invert(1);
+    }
+
+    .contact-info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .contact-info a,
+    .contact-info span {
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 0.95rem;
+    }
+
+    footer {
+      padding: 18px 0 30px;
+    }
+
+    .footer-shell {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-shell,
+      .story-shell,
+      .proof-grid,
+      .cta-shell,
+      .timeline-grid,
+      .pain-grid,
+      .services-grid,
+      .benefits-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero-media { min-height: 420px; }
+      .nav-links { display: none; }
+    }
+
+    @media (max-width: 760px) {
+      .container { width: min(100% - 24px, 100%); }
+
+      .hero,
+      .story,
+      .timeline,
+      .services,
+      .benefits,
+      .cta { padding-bottom: 56px; }
+
+      .hero-shell,
+      .story-shell,
+      .proof-grid,
+      .cta-shell,
+      .timeline-grid,
+      .pain-grid,
+      .services-grid,
+      .benefits-grid,
+      .hero-points,
+      .story-proof,
+      .dashboard-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-copy,
+      .story-copy,
+      .benefits-shell,
+      .cta-shell {
+        padding: 28px 22px;
+      }
+
+      .hero-copy h1 { font-size: clamp(2.2rem, 10vw, 3.2rem); }
+      .hero-media { min-height: 360px; }
+      .header-row { min-height: 74px; }
+      .brand-logo { width: 198px; }
+      .contact-info { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a href="#inicio" aria-label="Ir al inicio de ObraControl">
+        <img class="brand-logo" src="assets/obracontrol-logo.svg" alt="Logo de ObraControl">
+      </a>
+
+      <nav aria-label="Navegacion principal">
+        <ul class="nav-links">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#beneficios">Beneficios</a></li>
+          <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#resultados">Resultados</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+          <li><a class="nav-cta" href="https://wa.me/50212345678?text=Hola,%20quiero%20agendar%20un%20diagnostico%20para%20mi%20obra">Solicitar diagnostico</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-shell">
+        <div class="hero-copy">
+          <span class="eyebrow">Supervision inteligente para construccion</span>
+          <h1>
+            Supervisa tu obra desde cualquier lugar
+            <span class="accent">antes de que las perdidas se vuelvan invisibles.</span>
+          </h1>
+          <p>
+            ObraControl convierte tu proyecto en informacion visible, trazable y accionable. Monitoreas avance,
+            personal y puntos criticos en tiempo real, sin depender de visitas constantes ni reportes incompletos.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="https://wa.me/50212345678?text=Hola,%20quiero%20un%20diagnostico%20gratuito%20de%20mi%20obra">Solicitar diagnostico gratuito</a>
+            <a class="btn btn-secondary" href="#como-funciona">Ver como funciona</a>
+          </div>
+
+          <div class="hero-points">
+            <article class="hero-point">
+              <strong>24/7</strong>
+              <span>Visibilidad continua desde celular, tablet o computadora.</span>
+            </article>
+            <article class="hero-point">
+              <strong>72 h</strong>
+              <span>Implementacion rapida segun el tamano y etapa de la obra.</span>
+            </article>
+            <article class="hero-point">
+              <strong>1 panel</strong>
+              <span>Todo centralizado para decidir con criterio y evidencia.</span>
+            </article>
+          </div>
+        </div>
+
+        <div class="hero-media">
+          <img src="images/hero_principal.png" alt="Profesional supervisando una obra con monitoreo remoto">
+          <div class="hero-float">
+            <span class="badge">Monitoreo activo</span>
+            <h3>Control real sin estar en el sitio</h3>
+            <p>Alertas, visualizacion remota y evidencia para actuar antes de que un problema afecte costos o cronograma.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pain">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Lo que no ves en tu obra</span>
+          <h2>Te esta costando dinero</h2>
+          <p>Cuando no existe visibilidad operativa, las perdidas dejan de ser excepciones y se vuelven rutina.</p>
+        </div>
+
+        <div class="pain-grid">
+          <article class="pain-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M12 3v9"/><path d="M8 7h8"/><path d="M5 21h14"/><path d="M7 12h10"/><path d="M9 16h6"/></svg>
+            </div>
+            <h3>Mano de obra sin visibilidad</h3>
+            <p>No siempre tienes certeza de quien llego, cuanto tiempo productivo hubo o donde se estan perdiendo horas.</p>
+          </article>
+
+          <article class="pain-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M7 7v10"/><path d="M17 7v10"/><path d="M4 17h16"/><path d="M10 11h4"/></svg>
+            </div>
+            <h3>Material que desaparece</h3>
+            <p>Las fugas pequenas se convierten en sobrecostos relevantes cuando no hay evidencia ni control de movimientos.</p>
+          </article>
+
+          <article class="pain-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            </div>
+            <h3>Retrasos sin causa clara</h3>
+            <p>Sin validacion visual del avance, los problemas aparecen tarde y el cronograma se corrige demasiado tarde.</p>
+          </article>
+
+          <article class="pain-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10"/><path d="M7 13h6"/></svg>
+            </div>
+            <h3>Dependencia de una sola version</h3>
+            <p>Si todo depende del encargado, la informacion se filtra, llega incompleta o simplemente no llega a tiempo.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="story" id="resultados">
+      <div class="container story-shell">
+        <div class="story-photo">
+          <img src="images/seccion_historia_resultados.png" alt="Camara de seguridad instalada en una obra en construccion">
+        </div>
+        <div class="story-copy">
+          <span class="eyebrow">Control total de tu obra</span>
+          <h2>Sin estar <span>presente</span></h2>
+          <p>
+            ObraControl no vende solo camaras. Integra monitoreo visual, control de personal y seguimiento operativo
+            para que cada decision importante se tome con datos verificables y no con suposiciones.
+          </p>
+          <div class="story-proof">
+            <div>
+              <strong>Menos fugas</strong>
+              <span>Mayor control sobre puntos donde antes solo habia confianza.</span>
+            </div>
+            <div>
+              <strong>Mas orden</strong>
+              <span>Reportes mas claros para gerencia, supervision y clientes.</span>
+            </div>
+            <div>
+              <strong>Mas respuesta</strong>
+              <span>Detectas incidentes y desvios antes de que escalen.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="timeline" id="como-funciona">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Como funciona</span>
+          <h2>Implementacion simple, valor inmediato</h2>
+          <p>Disenado para que empieces a tener control real sin friccion para tu equipo ni procesos complejos.</p>
+        </div>
+
+        <div class="timeline-grid">
+          <article class="timeline-step">
+            <div class="step-number">1</div>
+            <h3>Diagnostico operativo</h3>
+            <p>Evaluamos tu obra, sus riesgos y los puntos de visibilidad que mas impacto tendran en control y ahorro.</p>
+          </article>
+
+          <article class="timeline-step">
+            <div class="step-number">2</div>
+            <h3>Instalacion del sistema</h3>
+            <p>Implementamos equipos, accesos y configuraciones segun la etapa constructiva y el flujo del proyecto.</p>
+          </article>
+
+          <article class="timeline-step">
+            <div class="step-number">3</div>
+            <h3>Monitoreo desde tu celular</h3>
+            <p>Tu equipo clave obtiene acceso remoto para revisar avance, incidencias y actividad desde cualquier lugar.</p>
+          </article>
+
+          <article class="timeline-step">
+            <div class="step-number">4</div>
+            <h3>Decisiones con evidencia</h3>
+            <p>Recibes reportes, alertas y visibilidad suficiente para actuar a tiempo y con menor incertidumbre.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="services" id="servicios">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Nuestros servicios</span>
+          <h2>Una solucion premium para supervision, control y confianza</h2>
+          <p>La tecnologia solo sirve si se traduce en menos perdida, mejor trazabilidad y decisiones mas rapidas.</p>
+        </div>
+
+        <div class="services-grid">
+          <article class="service-card">
+            <div class="service-image">
+              <img src="images/servicio_camaras_seguridad.png" alt="Camara profesional instalada para supervision en obra">
+            </div>
+            <div class="service-copy">
+              <h3>Camaras de seguridad</h3>
+              <p>Visualizacion estrategica de accesos, acopios, frentes de trabajo y zonas donde una perdida puede afectar rentabilidad.</p>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-image">
+              <img src="images/servicio_control_personal.png" alt="Control digital de ingreso de personal en obra">
+            </div>
+            <div class="service-copy">
+              <h3>Control de personal</h3>
+              <p>Mayor claridad sobre asistencia, permanencia y orden operativo para reducir dudas y mejorar trazabilidad.</p>
+            </div>
+          </article>
+
+          <article class="service-card">
+            <div class="service-image">
+              <img src="images/servicio_monitoreo_remoto.png" alt="Panel de monitoreo remoto y analisis de informacion en obra">
+            </div>
+            <div class="service-copy">
+              <h3>Monitoreo remoto</h3>
+              <p>Consulta el estado de la obra sin desplazarte, valida avances y responde con informacion actualizada y visible.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits" id="beneficios">
+      <div class="container benefits-shell">
+        <div class="section-head">
+          <span class="eyebrow">Beneficios para tu obra</span>
+          <h2>Menos perdidas. Mas control. Mejor criterio.</h2>
+          <p>ObraControl esta pensado para convertir supervision en ventaja operativa y no en una carga adicional.</p>
+        </div>
+
+        <div class="benefits-grid">
+          <article class="benefit-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V7l7-4z"/></svg>
+            </div>
+            <h3>Reducir perdidas de material</h3>
+            <p>La evidencia visual ayuda a prevenir fugas que normalmente se descubren cuando ya impactaron el presupuesto.</p>
+          </article>
+
+          <article class="benefit-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
+            </div>
+            <h3>Controlar tiempos</h3>
+            <p>Detecta cuellos de botella y valida avance con mas claridad para cuidar el ritmo de ejecucion.</p>
+          </article>
+
+          <article class="benefit-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M4 18l5-6 4 3 7-9"/><path d="M4 6h6v6"/></svg>
+            </div>
+            <h3>Prevenir problemas</h3>
+            <p>Actua antes de que una desviacion operativa escale a retraso, reclamo o sobrecosto significativo.</p>
+          </article>
+
+          <article class="benefit-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M7 16V8"/><path d="M12 16V5"/><path d="M17 16v-4"/></svg>
+            </div>
+            <h3>Decidir con datos</h3>
+            <p>Menos intuicion aislada, mas informacion util para gerencia, supervision y coordinacion de obra.</p>
+          </article>
+
+          <article class="benefit-card">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M7 12l3 3 7-7"/><circle cx="12" cy="12" r="9"/></svg>
+            </div>
+            <h3>Supervisar con tranquilidad</h3>
+            <p>Tu obra sigue visible aunque no estes presente, con menos dependencia de llamadas y reportes reactivos.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="proof">
+      <div class="container proof-grid">
+        <article class="proof-card dark">
+          <span class="eyebrow" style="color: var(--orange-strong);">Panel de control</span>
+          <h3>Tu obra en un solo vistazo</h3>
+          <p>Visualiza rendimiento, alertas y puntos de supervison en un formato claro para seguimiento gerencial y operativo.</p>
+
+          <div class="dashboard-shell">
+            <div class="dashboard-panel">
+              <div class="dashboard-title">
+                <strong style="font-family: var(--font-display); text-transform: uppercase;">Avance semanal</strong>
+                <span class="pill">Activo</span>
+              </div>
+              <div class="chart">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <div class="dashboard-panel">
+              <div class="dashboard-title">
+                <strong style="font-family: var(--font-display); text-transform: uppercase;">Indicadores</strong>
+              </div>
+              <div class="mini-stats">
+                <div class="mini-stat"><span>Personal activo</span><strong>58</strong></div>
+                <div class="mini-stat"><span>Puntos visibles</span><strong>12</strong></div>
+                <div class="mini-stat"><span>Alertas cerradas</span><strong>94%</strong></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="proof-card">
+          <span class="eyebrow">Lo que entregamos</span>
+          <h3>Informacion lista para actuar</h3>
+          <p>ObraControl esta pensado para que la supervision sea practica, visual y util en el momento de decidir.</p>
+          <div class="mini-stats" style="margin-top: 20px;">
+            <div class="mini-stat"><span>Evidencia visual del avance</span><strong>Claro</strong></div>
+            <div class="mini-stat"><span>Acceso remoto para decision</span><strong>Rapido</strong></div>
+            <div class="mini-stat"><span>Seguimiento operativo</span><strong>Constante</strong></div>
+            <div class="mini-stat"><span>Soporte de implementacion</span><strong>Cercano</strong></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container cta-shell">
+        <div class="cta-copy">
+          <span class="eyebrow">Empieza a tener control real</span>
+          <h2>Tu obra merece <span>mas visibilidad</span>, no mas suposiciones</h2>
+          <p>
+            Si hoy dependes de llamadas, fotos aisladas o reportes incompletos, ya es momento de dar el salto a una
+            supervision mas clara. ObraControl te ayuda a ordenar informacion, detectar desviaciones y tomar decisiones
+            con mayor confianza.
+          </p>
+
+          <ul class="cta-list">
+            <li>Diagnostico inicial para identificar puntos criticos y oportunidades de control.</li>
+            <li>Implementacion orientada a resultados, no solo a instalar equipos.</li>
+            <li>Experiencia mas profesional para gerencia, inversionistas y clientes.</li>
+          </ul>
+
+          <div class="cta-actions">
+            <a class="btn btn-primary" href="https://wa.me/50212345678?text=Hola,%20quiero%20agendar%20un%20diagnostico%20gratuito%20de%20ObraControl">Solicitar diagnostico</a>
+            <a class="btn btn-dark" href="mailto:info@obracontrol.com">Escribir por correo</a>
+          </div>
+        </div>
+
+        <div class="final-copy">
+          <img src="images/hero_principal.png" alt="Vista de obra moderna en etapa de ejecucion">
+          <div class="final-overlay">
+            <h2>Convierte supervision en ventaja competitiva</h2>
+            <p>Cuando tu obra se vuelve visible, tambien se vuelve mas predecible, mas ordenada y mas rentable.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section class="contact-band" id="contacto">
+    <div class="container contact-shell">
+      <img class="contact-logo" src="assets/obracontrol-logo.svg" alt="Logo de ObraControl">
+      <div class="contact-info">
+        <a href="https://wa.me/50212345678">(+502) 1234-5678</a>
+        <a href="mailto:info@obracontrol.com">info@obracontrol.com</a>
+        <span>Supervision inteligente para obras en Guatemala</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-shell">
+      <span class="footer-note">&copy; 2026 ObraControl. Todos los derechos reservados.</span>
+      <span class="footer-note">Landing premium basada en tu direccion visual y lista para seguir afinando con datos reales.</span>
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        var targetId = link.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+        var target = document.querySelector(targetId);
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>
