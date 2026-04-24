@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="96" viewBox="0 0 360 96" role="img" aria-labelledby="title desc">
+  <title id="title">Logo ObraControl</title>
+  <desc id="desc">Isotipo de casco de seguridad con senal y el nombre ObraControl</desc>
+  <rect width="96" height="96" rx="24" fill="#10233F"/>
+  <path d="M48 16c-10.9 0-19.7 8.8-19.7 19.7v2.5h39.4v-2.5C67.7 24.8 58.9 16 48 16Z" fill="#F77F00"/>
+  <path d="M26.4 41.4h43.2c2.3 0 4.2 1.9 4.2 4.2s-1.9 4.2-4.2 4.2H26.4c-2.3 0-4.2-1.9-4.2-4.2s1.9-4.2 4.2-4.2Z" fill="#F77F00"/>
+  <path d="M40.2 54.3a4.3 4.3 0 1 1 0 8.6 4.3 4.3 0 0 1 0-8.6Zm15.6 0a4.3 4.3 0 1 1 0 8.6 4.3 4.3 0 0 1 0-8.6Z" fill="#10233F"/>
+  <path d="M48 54.8c-13.7 0-24.9 11.1-24.9 24.9h8.7c0-8.9 7.3-16.2 16.2-16.2s16.2 7.3 16.2 16.2h8.7C72.9 65.9 61.7 54.8 48 54.8Z" fill="#FFFFFF"/>
+  <path d="M48 64.6c-8.3 0-15.1 6.8-15.1 15.1h8c0-4 3.2-7.2 7.1-7.2 4 0 7.2 3.2 7.2 7.2h8C63.1 71.4 56.4 64.6 48 64.6Z" fill="#FFFFFF"/>
+  <circle cx="48" cy="79.7" r="5.3" fill="#FFFFFF"/>
+  <g fill="#10233F" font-family="Montserrat, Arial, sans-serif">
+    <text x="114" y="46" font-size="34" font-weight="900" letter-spacing="0.5">OBRA</text>
+    <text x="201" y="46" font-size="34" font-weight="900" fill="#F77F00" letter-spacing="0.5">CONTROL</text>
+    <text x="115" y="66" font-size="10.5" font-weight="700" letter-spacing="1.7">SUPERVISION SIN ESTAR PRESENTE</text>
+  </g>
+</svg>
